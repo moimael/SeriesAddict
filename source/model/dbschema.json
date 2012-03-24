@@ -1,0 +1,141 @@
+[
+	{
+		"table": "series",
+		"columns": [
+			{ 
+				"column": "id",
+				"type": "INTEGER",
+				"constraints": ["PRIMARY KEY"]
+			},
+			{
+				"column": "Actors",
+				"type": "TEXT"
+			},
+			{
+				"column": "Airs_DayOfWeek",
+				"type": "TEXT"
+			},
+			{
+				"column": "FirstAired",
+				"type": "TEXT"
+			},
+			{
+				"column": "Genre",
+				"type": "TEXT"
+			},
+			{
+				"column": "Overview",
+				"type": "TEXT"
+			},
+			{
+				"column": "Rating",
+				"type": "TEXT"
+			},
+			{
+				"column": "SeriesName",
+				"type": "TEXT"
+			},
+			{
+				"column": "Status",
+				"type": "TEXT"
+			},
+			{
+				"column": "lastupdated",
+				"type": "TEXT"
+			},
+			{
+				"column": "poster",
+				"type": "TEXT"
+			}
+		]
+	},
+	
+	{
+		"table": "episodes",
+		"columns": [
+			{
+				"column": "id",
+				"type": "INTEGER",
+				"constraints": ["PRIMARY KEY"]
+			},
+			{
+				"column": "Director", 
+				"type": "TEXT"
+			},
+			{
+				"column": "EpisodeName", 
+				"type": "TEXT"
+			},
+			{
+				"column": "EpisodeNumber", 
+				"type": "INTEGER"
+			},
+			{
+				"column": "FirstAired", 
+				"type": "TEXT"
+			},
+			{
+				"column": "GuestStars", 
+				"type": "TEXT"
+			},
+			{
+				"column": "Overview", 
+				"type": "TEXT"
+			},
+			{
+				"column": "Rating", 
+				"type": "TEXT"
+			},
+			{
+				"column": "SeasonNumber", 
+				"type": "INTEGER"
+			},
+			{
+				"column": "Writer", 
+				"type": "TEXT"
+			},
+			{
+				"column": "filename", 
+				"type": "TEXT"
+			},
+			{
+				"column": "lastupdated",
+				"type": "INTEGER"
+			},
+			{
+				"column": "seasonid",
+				"type": "INTEGER"
+			},
+			{
+				"column": "seriesid",
+				"type": "INTEGER"
+			},
+			{
+				"column": "watched",
+				"type": "INTEGER"
+			},
+		]
+	},
+	{
+		"table": "banners",
+		"columns": [
+			{
+				"column": "id",
+				"type": "INTEGER",
+				"constraints": ["PRIMARY KEY"]
+			},
+			{
+				"column": "BannerPath", 
+				"type": "TEXT"
+			},
+			{
+				"column": "Season", 
+				"type": "TEXT"
+			},
+			{
+				"column": "SerieID", 
+				"type": "INTEGER"
+			}
+		]
+	}
+]
