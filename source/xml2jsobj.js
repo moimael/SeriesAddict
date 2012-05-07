@@ -26,7 +26,7 @@ function XML2jsobj(node) {
 		else {
 			data[name] = value;
 		}
-	};
+	}
 	
 	// element attributes
 	var c, cn;

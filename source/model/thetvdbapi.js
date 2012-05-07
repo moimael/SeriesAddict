@@ -1,5 +1,5 @@
 enyo.kind({
-	name: "theTvDbApi",
+	name: "TheTVDBSearch",
 	kind: "enyo.Component",
 	published: {
 		apiKey: "",
@@ -9,7 +9,10 @@ enyo.kind({
 		onFinished: ""
 	},
 	components: [
-		{name: "getMatchingShows", kind: "enyo.WebService", onSuccess: "gotMatchingShows", onFailure: "gotMatchingShowsFailure"},
+		{name: "getMatchingShows", kind: "enyo.WebService",
+			onSuccess: "gotMatchingShows",
+			onFailure: "gotMatchingShowsFailure"
+		}
 	],
 	
 	create: function() {
@@ -51,10 +54,6 @@ enyo.kind({
 			this.showsIdList.push(xmlDoc.getElementsByTagName('Series')[i].getElementsByTagName('seriesid')[0].childNodes[0].nodeValue);
 		}
 		this.doFinished();
-		enyo.windows.addBannerMessage(inResponse, '{}');
-		enyo.windows.addBannerMessage(this.showsNameList, '{}');
-		enyo.windows.addBannerMessage(this.showsIdList, '{}');
-		
 	}
 });
 

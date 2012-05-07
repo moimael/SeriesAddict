@@ -1,0 +1,42 @@
+	.MultiselectControls {
+		position: absolute;
+		width: 100%;
+		/* background-image: url(../images/divider_background.png); */
+		z-index: 10;
+	}
+
+	.MultiselectTop {
+	  /*  line-height: 50px;*/
+		height: 71px;
+		top: 0px;
+		color: #fff;
+		-webkit-transition: top 0.25s linear;
+		background: url(../images/multi-select-header.png) repeat-x;
+	}
+
+
+
+	.MultiselectBottom {
+		line-height: 50px;
+		height: 58px;
+		bottom: 0px;
+		-webkit-transition: bottom 0.25s linear;
+		background: url(../images/multi-select-toolbar.png) repeat-x;
+	}
+
+
+
+	.MultiselectHideBottom {
+		bottom: -58px;
+	}
+
+	.MultiselectHideTop {
+		top: -71px;
+	}
+	/** images on select border color with highlight*/
+	.MultiselectHighlight > img,
+	.AlbumModeMultiselect .MultiselectHighlight {
+		z-index: 15;
+		border: 15px none;
+		-webkit-border-image: url(../images/multi-select-9tile.png) 15 15 15 15 repeat repeat;
+	}

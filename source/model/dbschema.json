@@ -113,7 +113,7 @@
 			{
 				"column": "watched",
 				"type": "INTEGER"
-			},
+			}
 		]
 	},
 	{
