@@ -58,11 +58,7 @@ enyo.kind({
 		}
 		for(i = 0; i < xmlDoc.getElementsByTagName('Episode').length; i++){
 			if(typeof xmlDoc.getElementsByTagName('Episode')[i].getElementsByTagName('id')[0] !== 'undefined'){
-				this.updatedEpisodesList.push({
-					id: xmlDoc.getElementsByTagName('Episode')[i].getElementsByTagName('id')[0].childNodes[0].nodeValue,
-					serieId: xmlDoc.getElementsByTagName('Episode')[i].getElementsByTagName('Series')[0].childNodes[0].nodeValue
-					}
-				);
+				this.updatedEpisodesList.push(xmlDoc.getElementsByTagName('Episode')[i].getElementsByTagName('id')[0].childNodes[0].nodeValue);
 			}
 		}
 		//parcourir series = à serieid et episodes = à episodeid

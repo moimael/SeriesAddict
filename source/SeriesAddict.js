@@ -63,6 +63,7 @@ enyo.kind({
 	
 	// Add database shows to the home  
 	populate: function(inResponse){
+		this.$.home.destroyItems();
 		for(i = 0; i < inResponse.length; i++){
 			var thumbnail = "/var/luna/data/extractfs" + "/media/internal/.seriesaddict/banners/" + inResponse[i].poster + ":0:0:255:375:3";
 			var item = {
@@ -77,7 +78,7 @@ enyo.kind({
 	},
 	
 	getUpdatedShows: function() {
-		this.$.updateService.getUpdatedShows(1335801138, 1225801138);
+		this.$.updateService.getUpdatedShows(1335801138, 1105801138);
 	},
 	
 	gotUpdates: function() {
@@ -89,20 +90,18 @@ enyo.kind({
 	
 	updateSeries: function(inResponse) {
 		for(i = 0; i < inResponse.length; i++){
-			var index = this.$.updateService.hasUpdatedSeriesList().indexOf(inResponse[i].id);
+			var index = this.$.updateService.hasUpdatedSeriesList().indexOf(inResponse[i].id.toString());
 			if(index !== -1){
-				this.log(index);
-//				this.$.theTvDbApi3.setSerieId(this.$.updateService.hasUpdatedSeriesList()[i]);
-//				this.$.theTvDbApi3.getShowDetails(true);
+				this.$.theTvDbApi3.setSerieId(inResponse[i].id);
+				this.$.theTvDbApi3.setUpdateMode(true);
+				this.$.theTvDbApi3.getShowDetails();
 			}
 		}
-		this.$.home.$.spinner.hide();
-//		for(i = 0; i < this.$.updateService.hasUpdatedEpisodesList().length; i++){
-//			if(inResponse.indexOf(this.$.updateService.hasUpdatedEpisodesList()[i] != -1)){
-//				this.$.theTvDbApi3.setEpisodeId(this.$.updateService.hasUpdatedEpisodesList()[i].id);
-//				this.$.theTvDbApi3.getEpisodeDetails();
-//			}
-//		}
+		
+		var sql = 'SELECT id FROM episodes';
+		this.$.seriesDb.query(sql, {
+			onSuccess: enyo.bind(this, this.updateEpisodes)
+		});
 	},
 	
 	updateDb: function() {
@@ -112,28 +111,21 @@ enyo.kind({
 		});
 	},
 	
-	gotShowDetails: function(){
-//		var query = {
-//			sql: 'SELECT id, poster FROM series WHERE id = ?',
-//			values: [this.$.addShowDialog.hasShowId()]
-//		};
-//		this.$.seriesDb.query(query, {
-//			onSuccess: enyo.bind(this, this.addSeries)
-//		});
-		this.populateView();
+	updateEpisodes: function(inResponse) {
+		for(i = 0; i < inResponse.length; i++){
+			var index = this.$.updateService.hasUpdatedEpisodesList().indexOf(inResponse[i].id.toString());
+			if(index !== -1) {
+				this.$.theTvDbApi3.setEpisodeId(inResponse[i].id);
+				this.$.theTvDbApi3.setUpdateMode(true);
+				this.$.theTvDbApi3.getEpisodeDetails();
+			}
+		}
+//		this.$.home.$.spinner.hide();
 	},
 	
-	// Add serie to the series view
-//	addSeries: function(inResponse) {
-//		this.log(inResponse)
-//		if (inResponse != null) {
-//			this.response = inResponse;
-//		} else {
-//			this.response = null;
-//		}
-//		this.render();
-////		this.addItem(this.$.addShowDialog.hasShowName(), "/media/internal/.seriesaddict/banners/" + inResponse[0].poster, inResponse[0].id);
-//	},
+	gotShowDetails: function(){
+		this.populateView();
+	},
 	
 	// Show seasons view
 	showSeasons: function(inSender, inGridItem) {
@@ -191,32 +183,6 @@ enyo.kind({
 		this.$.theTvDbApi3.getShowDetails();
 		this.$.theTvDbApi3.getShowBanners();
 	},
-	
-//	render: function() {
-//		this.log("test" + this.response);
-//		
-//		//Workaround !!! Sometimes, db return onsuccess with no data, so we refresh the entire view to add item.
-//		if(this.response != null){
-//			var thumbnail = "/var/luna/data/extractfs" + "/media/internal/.seriesaddict/banners/" + this.response[0].poster + ":0:0:255:375:3";
-//			var item = {
-//				name: this.$.addShowDialog.hasShowName(),
-//				kind: "enyo.Image",
-//				src: thumbnail,
-//				seriesId: this.response[0].id
-//		
-//			};
-//			var i;
-//			for(i = 0; i < this.$.home.getItems().length; i++){
-//				if(this.$.home.getItems()[i].seriesId == this.response[0].id){
-//					this.$.home.removeItem(this.$.home.getItems()[i]);
-//					break;
-//				}
-//			}
-//			this.$.home.addItem(item, true);
-//		}else {
-//			this.populateView();
-//		}
-//	},
 	
 	// Go back to the previous view
 	goBack: function(inSender, inEvent) {
