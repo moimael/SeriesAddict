@@ -36,8 +36,11 @@ enyo.kind({
 		var c = this.getControls();
 		if(c.length === 0) return;
 		
-		var colsPerRow = Math.floor(this.dim.width/this.cellWidth);
-		
+		var colsPerRow = Math.floor(this.dim.width/this.cellWidth + 2);
+		//If margin between 2 grid item is < 18
+		while((this.dim.width - ((this.cellWidth + 2) * colsPerRow)) / (colsPerRow + 1) < 12){
+			colsPerRow -=1;
+		}
 
 		for(var i=0;i<c.length;i++) {
 			this.positionControl(c[i], i, colsPerRow);
@@ -53,7 +56,7 @@ enyo.kind({
 		
 		var top = Math.floor(index/colsPerRow) * this.cellHeight;
 		var left = (index%colsPerRow) * this.cellWidth;
-		var margin = ((this.dim.width - ((colsPerRow - 1) * (this.cellWidth + 2))) / colsPerRow) / 2;
+		var margin = ((this.dim.width - (colsPerRow * (this.cellWidth + 2))) / (colsPerRow + 1)) / 2;
 
 		this.log(this.dim.width + " " + margin + " " + this.cellWidth + " " + colsPerRow);
 		control.applyStyle("top", top + "px");
@@ -102,6 +105,7 @@ enyo.kind({
 		var s = enyo.dom.getComputedStyle(n);
 		this.log(s.width + " " + s.height + " " + window.innerHeight + " " + window.innerWidth);
 		this.dim = {width:window.innerWidth,height:parseInt(s.height)}; //HACK, not working if grid control is not full width
+		this.render();
 	},
 	
 	/*
