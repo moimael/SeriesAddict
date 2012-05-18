@@ -22,7 +22,8 @@ enyo.kind({
 		},
 		{name: "seriesDb", kind: "onecrayon.Database", database: 'ext:com.moimael.seriesaddict', version: '1', debug: true},
 		{name: "updateService", kind: "TheTVDBUpdate", apiKey: "FAD75AF31E1B1577", 
-			onResponse: "gotUpdates"
+			onResponse: "gotUpdates",
+			onCurrentTimeResponse: "gotCurrentTime"
 		}
 	],
 	
@@ -31,9 +32,9 @@ enyo.kind({
 		
 		//If app is run for the first time, create database
 		if (!localStorage["SeriesAddict.firstRun"]){
-			this.populateDatabase();
+			this.createDatabase();
 		} else {
-			this.populateDatabase();
+			this.createDatabase();
 			this.populateView(); //We fill the view with database content
 		}
 		
@@ -43,13 +44,14 @@ enyo.kind({
 		
 	},
 	
-	populateDatabase: function() {
+	createDatabase: function() {
 		this.$.seriesDb.setSchemaFromURL('source/model/dbschema.json', {
 			onSuccess: enyo.bind(this, this.finishFirstRun)
 		});
 	},
 	
 	finishFirstRun: function() {
+		localStorage["SeriesAddict.lastUpdated"] = "";
 		localStorage["SeriesAddict.firstRun"] = true;
 	},
 	
@@ -78,7 +80,13 @@ enyo.kind({
 	},
 	
 	getUpdatedShows: function() {
-		this.$.updateService.getUpdatedShows(1335801138, 1105801138);
+		this.$.updateService.getCurrentTime();
+	},
+	
+	gotCurrentTime: function() {
+		var currentTime = this.$.updateService.hasCurrentTime();
+		var lastUpdated = localStorage["SeriesAddict.lastUpdated"];
+		this.$.updateService.getUpdatedShows(currentTime, lastUpdated);
 	},
 	
 	gotUpdates: function() {

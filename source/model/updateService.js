@@ -5,12 +5,17 @@ enyo.kind({
 		apiKey: ""
 	},
 	events: {
-		onResponse: ""
+		onResponse: "",
+		onCurrentTimeResponse: ""
 	},
 	components: [
 		{name: "getUpdatedShows", kind: "enyo.WebService",
 			onSuccess: "gotUpdatedShows",
 			onFailure: "gotUpdatedShowsFailure"
+		},
+		{name: "getCurrentTime", kind: "enyo.WebService",
+			onSuccess: "gotCurrentTime",
+			onFailure: "gotCurrentTimeFailure"
 		}
 	],
 	
@@ -21,6 +26,7 @@ enyo.kind({
 		this.baseKeyUrl = this.baseUrl + this.apiKey;
 		this.updatedSeriesList = [];
 		this.updatedEpisodesList = [];
+		this.currentTime = 0;
 	},
 	
 	hasUpdatedSeriesList: function() {
@@ -40,9 +46,14 @@ enyo.kind({
 	
 		var elapsedTime = this.getElapsedTime(actualTime, lastUpdated);
 		// Get a list of shows matching showName.
-		var url = this.baseKeyUrl + "/updates/updates_" + elapsedTime + ".xml";
-		this.$.getUpdatedShows.setUrl(url);
-		this.$.getUpdatedShows.call();
+		if(elapsedTime === "all") {
+		
+		}
+		else {
+			var url = this.baseKeyUrl + "/updates/updates_" + elapsedTime + ".xml";
+			this.$.getUpdatedShows.setUrl(url);
+			this.$.getUpdatedShows.call();
+		}
 	},
 	
 	gotUpdatedShows: function(inSender, inResponse, inRequest) {
@@ -67,7 +78,6 @@ enyo.kind({
 	
 	//TODO split in 2 functions
 	getElapsedTime: function(actualTime, lastUpdated) {
-		//http://www.thetvdb.com/api/Updates.php?type=none
 		var xmlFileType;
 		var elapsedTime = actualTime - lastUpdated;
 		if (elapsedTime < 86400){
@@ -82,8 +92,27 @@ enyo.kind({
 		}
 		else {
 			//update all
+			xmlFileType = "all";
 		}
 		return xmlFileType;
+	},
+	
+	getCurrentTime: function() {
+		var url = this.baseUrl + "Updates.php?type=none";
+		this.$.getCurrentTime.setUrl(url);
+		this.$.getCurrentTime.call();
+	},
+	
+	gotCurrentTime: function(inResponse) {
+		this.doCurrentTimeResponse();
+		var parser = new DOMParser();
+		var xmlDoc = parser.parseFromString(inResponse, "text/xml");
+		this.currentTime = xmlDoc.getElementsByTagName('Items')[0].getElementsByTagName('Time')[0].childNodes[0].nodeValue;
+		this.doCurrentTimeResponse();
+	},
+	
+	hasCurrentTime: function() {
+		return this.currentTime();
 	}
 });
 
